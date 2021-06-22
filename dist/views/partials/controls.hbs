@@ -1,0 +1,32 @@
+<body style="background-color: #d1ffe2;">
+<table border="1" align="center">
+    <theader> {{!-- Encabezado - th: para negrita --}}     
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Password</th>
+      <th>Perfil</th>
+      <th>Accion</th>
+    </theader>
+        {{#each users}}
+        <tr>          
+          <td>{{id}}</td> 
+          <td>{{nombre}}</td> 
+          <td>{{password}}</td> 
+          <td>{{rol}}</td>  
+          <td><a class="btn btn-danger" href="/user/delete/{{id}}">Eliminar</a></td>   
+        </tr>
+        {{else}}
+        <tr>
+          <td colspan="4">No hay mas filas</td>
+        </tr>
+        {{/each}}
+  </table>
+<div align="center">
+  <BR>
+  <button class="btn btn-info" onclick="window.location.href='/user/home'">Volver</button>
+</div>
+<div align="center">
+  <BR>    
+  <button class="btn btn-danger" onclick="window.location.href='/user/salir'">Salir</button>
+</div>
+</body>

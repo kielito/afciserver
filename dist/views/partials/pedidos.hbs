@@ -1,0 +1,31 @@
+<body style="background-color: #d1ffe2;">
+<BR>
+<table border="1" align="center">
+      <theader>
+        <th >Articulo</th>
+        <th >Fecha</th> 
+        <th >Calle</th>
+        <th >Altura</th>
+        <th >Total</th>
+      </theader>
+          {{#each pedidos}}
+          <tr>
+            <td align="center">{{id}}</td>
+            <td align="center">{{fecha}}</td>
+            <td align="center">{{calle}}</td>
+            <td align="center">{{altura}}</td>            
+            <td align="center">{{total}}</td>
+          </tr>
+          {{else}}
+          <tr>
+            <td colspan="5">No se realizaron pedidos!</td>
+          </tr>
+          {{/each}}          
+</table>
+
+<div align="center">
+  <BR>
+    <button class="btn btn-info" onclick="window.location.href='/admin/home'">Volver</button>
+    <button class="btn btn-success" onclick="window.location.href='/user/salir'">Salir</button>
+</div>
+</body>

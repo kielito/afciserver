@@ -1,0 +1,29 @@
+<body style="background-color: #d1ffe2;">
+    <div class="container p-4"> {{!-- Paso 26 --}}
+        <div class="row">
+            <div class="col-md-4 mx-auto">
+                <div class="card text-center bg-dark">
+                    <div class="card-header bg-success">
+                        <h3>Sign Up</h3>
+                    </div>
+                    <div class="card-body bg-dark">
+                        <form action="../user/signup" method="post">
+                            <div class="form-group"> {{!-- Paso 27 --}}
+                                <input type="text" name="nombre" placeholder="Nombre" class="form-control" autofocus>
+                                <!--name: nombre de la variable, placeholder: etiqueta-->
+                                </br>
+                                <input type="password" name="password" placeholder="Contraseña" class="form-control">
+                                </br> {{!-- Paso 17 --}}
+                                <input type="password" name="repassword" placeholder="Repetir Contraseña" class="form-control"> 
+                                </br>
+                                <input type="email" name="email" placeholder="email" class="form-control">
+                                </br>
+                                <button class="btn btn-primary btn-block">Registrar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
