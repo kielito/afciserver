@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import {TokenValidation} from "../lib/verifyToken";
 import userController from '../controller/userController'; //ruta relativa
-import { crearArchivo, leerArchivo } from '../controller/archivoController';
+import { crearArchivo, buscarArchivos, buscarArchivo, eliminarArchivo } from '../controller/archivoController';
 import multer from '../lib/multer';
 
 class UserRoutes{
@@ -19,8 +19,11 @@ class UserRoutes{
         });        
 
         //archivos
-		this.router.get('/archivos', leerArchivo , userController.signup);
-		this.router.post('/archivos', multer.single('imagen'), crearArchivo , userController.addUser);
+		this.router.get('/archivos/:id', buscarArchivo);
+        this.router.delete('/archivos/:id',eliminarArchivo);
+        this.router.get('/archivos', buscarArchivos);
+		this.router.post('/archivos', multer.single('image'), crearArchivo);
+        
 
         //inicio sesion
         this.router.get('/signin',userController.signin); 

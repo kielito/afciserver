@@ -11,8 +11,8 @@ class UserController{
 
     public async login(req:Request,res:Response){
 		var { Usuario, Email, Password } = req.body;
-		//Usuario = Usuario.replace(/[='"]/g,'');
-		//Email = Email.replace(/[='"]/g,'');
+		Usuario = Usuario.replace(/[='"]/g,'');
+		Email = Email.replace(/[='"]/g,'');
 		console.log(Usuario, Email);
         const result = await userModel.buscarUsuario(Usuario, Email);
         

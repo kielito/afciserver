@@ -72,6 +72,27 @@ class UserModel {
 	}
 
 
+	async crearArchivo(archivo: object) {		
+		const result = (await this.db.query('INSERT INTO archivo SET ?', [archivo]))[0].insertId;
+		return result;		
+	}
+
+	async budcarArchivos() {		
+		const result = await this.db.query('SELECT * FROM archivo');
+		return result[0];		
+	}
+
+	async budcarArchivo(id: string) {		
+		const result = (await this.db.query('SELECT * FROM archivo WHERE Id = ?', [id]));
+		return result[0][0];;		
+	}
+
+	async eliminarArchivo(id: string) {
+		const result = (await this.db.query('DELETE FROM archivo WHERE Id = ?', [id]))[0].affectedRows;		
+		return result;
+	}
+
+
 	//Encriptar Clave
 	encriptarPassword = async(password: string): Promise<string> => {
         const salt = await bcryptjs.genSalt(10);

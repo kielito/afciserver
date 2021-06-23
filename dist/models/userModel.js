@@ -99,6 +99,31 @@ class UserModel {
             return result;
         });
     }
+    crearArchivo(archivo) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = (yield this.db.query('INSERT INTO archivo SET ?', [archivo]))[0].insertId;
+            return result;
+        });
+    }
+    budcarArchivos() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = yield this.db.query('SELECT * FROM archivo');
+            return result[0];
+        });
+    }
+    budcarArchivo(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = (yield this.db.query('SELECT * FROM archivo WHERE Id = ?', [id]));
+            return result[0][0];
+            ;
+        });
+    }
+    eliminarArchivo(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = (yield this.db.query('DELETE FROM archivo WHERE Id = ?', [id]))[0].affectedRows;
+            return result;
+        });
+    }
 }
 const userModel = new UserModel();
 exports.default = userModel;

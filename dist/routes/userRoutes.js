@@ -21,8 +21,10 @@ class UserRoutes {
             res.render("partials/signinForm");
         });
         //archivos
-        this.router.get('/archivos', archivoController_1.leerArchivo, userController_1.default.signup);
-        this.router.post('/archivos', multer_1.default.single('imagen'), archivoController_1.crearArchivo, userController_1.default.addUser);
+        this.router.get('/archivos/:id', archivoController_1.buscarArchivo);
+        this.router.delete('/archivos/:id', archivoController_1.eliminarArchivo);
+        this.router.get('/archivos', archivoController_1.buscarArchivos);
+        this.router.post('/archivos', multer_1.default.single('image'), archivoController_1.crearArchivo);
         //inicio sesion
         this.router.get('/signin', userController_1.default.signin);
         this.router.post('/signin', userController_1.default.login); //Paso 15
