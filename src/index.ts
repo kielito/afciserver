@@ -7,7 +7,6 @@ import path from "path";
 import userRoutes from './routes/userRoutes';
 import articuloRoutes from './routes/articuloRoutes';
 import ProveedorRoutes from './routes/proveedorRoutes';
-import comentarioRoutes from './routes/comentarioRoutes';
 import session from "express-session";
 import flash from "connect-flash";
 
@@ -81,7 +80,6 @@ class Server{
 		this.app.use("/user",userRoutes);
 		this.app.use("/articulo",articuloRoutes);
 		this.app.use("/proveedor",ProveedorRoutes);		
-		this.app.use("/comentario",comentarioRoutes);
     }
 
 	start():void{

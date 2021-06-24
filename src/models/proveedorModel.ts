@@ -14,14 +14,6 @@ class ProveedorModel {
 			database: 'heroku_4505cc56058eb11',			
 			connectionLimit: 10,
 			multipleStatements: false
-			/*
-			host: 'localhost',
-			user: 'root',
-			password: '',
-			database: 'heroku_4505cc56058eb11',
-			connectionLimit: 10,
-			multipleStatements: false
-			*/
 		});
 	}
 
@@ -36,18 +28,35 @@ class ProveedorModel {
 			return precio[0][0];
 		return null;
 	}
+
+	async buscarProveedor(id: string) {
+		const encontrado: any = await this.db.query('SELECT * FROM proveedor WHERE Id = ?', [id]);		
+		if (encontrado.length > 1)
+			return encontrado[0][0];
+		return null;
+	}
+
+	async buscarNumeroDocumento(numeroDocumento: string) {
+		const encontrado: any = await this.db.query('SELECT * FROM proveedor WHERE NumeroDocumento = ?', [numeroDocumento]);		
+		if (encontrado.length > 1)
+			return encontrado[0][0];
+		return null;
+	}
 	
-	async crearCompra(compra: object) {		
-		const result = (await this.db.query('INSERT INTO pedidos SET ?', [compra]))[0].insertId;		
+	async crearProveedor(proveedor: object) {		
+		const result = await this.db.query('INSERT INTO proveedor SET ?', [proveedor]);		
 		return result;		
 	}
 
-	async crearCompraArticulo(compra: object) {		
-		const result = (await this.db.query('INSERT INTO pedidos_articulos SET ?', [compra]))[0].affectArrow;
-		
-		return result;		
-	}
+	async actualizarProveedor(proveedor: object, id: string) {
+		const result = (await this.db.query('UPDATE proveedor SET ? WHERE Id = ?', [proveedor, id]))[0].affectedRows;		
+		return result;
+	}	
 	
+	async eliminarProveedor(id: string) {
+		const result = (await this.db.query('DELETE FROM proveedor WHERE Id = ?', [id]))[0].affectedRows;		
+		return result;
+	}
 }
 
 const proveedorModel: ProveedorModel = new ProveedorModel();

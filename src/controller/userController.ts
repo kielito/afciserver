@@ -102,11 +102,7 @@ class UserController{
 
         if (!busqueda) {
             const result = await userModel.crear(usuario);
-			
-			/*if (!result) 
-				req.flash('error','No se pudo crear el usuario!');
 
-			req.flash('confirmacion','Usuario Registrado correctamente!');*/
 			if (!result)
 				return res.status(400).json({ message:"No se pudo crear el usuario "});
 			else{
@@ -145,7 +141,7 @@ class UserController{
 				if(result) {			
 					return res.status(200).json({ message:"Usuario actualizado correctamente"});
 				}
-				return res.status(400).json({ message:"El usuario y/o email ya se encuentra registrado"});
+				return res.status(400).json({ message:"Error al actualizar los datos!"});
 			}
 		}
 		return res.status(400).json({ message:"El usuario no se encuentra registrado"});

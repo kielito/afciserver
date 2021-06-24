@@ -23,61 +23,50 @@ class ProveedorController {
     //CRUD
     agregar(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            /*const articulo = req.body;
-            let idProducto;
-    
-            var texto_limpio = articulo.nombre.replace(/^\s+|\s+$/g,"");
-            
-            if(texto_limpio === "")
-            {
-                return res.status(500).json({ message:"El Nombre no puede estar vacío! "});
-            }
-            const busqueda = await articuloModel.buscarCodigoProducto(articulo.CodigoProducto);
-        
-            if (!busqueda) {
-                idProducto = await articuloModel.crear(articulo.CodigoProducto, articulo.Descripcion);
+            const proveedor = req.body;
+            if (proveedor.TipoDocumento === "" || proveedor.NumeroDocumento === "" || proveedor.RazonSocial === "" || proveedor.Email === "" || proveedor.Direccion === "" || proveedor.Localidad === "" || proveedor.Provincia === "" || proveedor.CodigoPostal === "") {
+                return res.status(400).json({ message: "Debe completar todos los datos!" });
             }
             else {
-                const resultBuscarProdProv = await articuloModel.buscarProductoProveedor(busqueda.Id, articulo.IdProveedor);
-                if (resultBuscarProdProv)
-                    return res.status(500).json({ message:"El Producto ya se encuentra registrado para este proveedor!"});
+                const busqueda = yield proveedorModel_1.default.buscarNumeroDocumento(proveedor.NumeroDocumento);
+                if (!busqueda) {
+                    const resultado = yield proveedorModel_1.default.crearProveedor(proveedor);
+                    if (!resultado)
+                        return res.status(400).json({ message: "No se pudo crear el proveedor!" });
+                    else {
+                        return res.status(200).json({ message: "Proveedor Registrado correctamente!" });
+                    }
+                }
+                return res.status(500).json({ message: "El Proveedor ya se encuentra registrado!" });
             }
-    
-            const result = await articuloModel.crearProductoProveedor(idProducto, articulo.IdProveedor, articulo.StockMinimo, articulo.StockActual, articulo.PrecioVenta);
-                            
-            if (!result)
-                return res.status(500).json({ message:"No se pudo crear el producto! "});
-            return res.status(200).json({ message:"Producto agregado correctamente! "}); */
         });
     }
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            /*var texto_limpio = req.body.nombre.replace(/^\s+|\s+$/g,"");
-            if(texto_limpio === "")
-            {
-                return res.status(500).json({ message:"El Nombre no puede estar vacío! "});
+            const proveedor = req.body;
+            const id = proveedor.Id;
+            delete proveedor.Id;
+            const busqueda = yield proveedorModel_1.default.buscarProveedor(id);
+            if (busqueda) {
+                if (proveedor.TipoDocumento === "" || proveedor.NumeroDocumento === "" || proveedor.RazonSocial === "" || proveedor.Email === "" || proveedor.Direccion === "" || proveedor.Localidad === "" || proveedor.Provincia === "" || proveedor.CodigoPostal === "") {
+                    return res.status(400).json({ message: "Debe completar todos los datos!" });
+                }
+                else {
+                    const result = yield proveedorModel_1.default.actualizarProveedor(proveedor, id);
+                    if (result) {
+                        return res.status(200).json({ message: "Proveedor actualizado correctamente" });
+                    }
+                    return res.status(400).json({ message: "Error al actualizar los datos!" });
+                }
             }
-    
-            const id = req.body.id;
-            delete req.body.id;
-                    
-            const result = await articuloModel.actualizar(req.body, id);
-            
-            if(result)
-                return res.status(200).json({ message:"El producto fue actualizado correctamente! "});
-            else
-                return res.status(500).json({ message:"El producto no se pudo actualizar!"});*/
+            return res.status(400).json({ message: "El Proveedor no se encuentra registrado" });
         });
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            /*const articulo = req.body;
-            console.log(req.body);
-            
-            await articuloModel.eliminarProductoProveedor(articulo.id);
-            //await articuloModel.eliminar(articulo.id);
-                
-            return res.status(200).json({ message:"Se eliminó el producto correctamente!"});*/
+            const { id } = req.params;
+            const result = yield proveedorModel_1.default.eliminarProveedor(id);
+            return res.status(200).json({ message: "Se eliminó el Proveedor correctamente!" });
         });
     }
 }

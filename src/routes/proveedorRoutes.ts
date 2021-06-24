@@ -16,9 +16,9 @@ class ProveedorRoutes{
         }); 
 
 		this.router.get('/listar',TokenValidation,proveedorController.listar);		
-		this.router.post('/agregar',TokenValidation,proveedorController.agregar);
-		this.router.post('/editar',TokenValidation,proveedorController.update);        
-        this.router.post('/eliminar',TokenValidation,proveedorController.delete);
+		this.router.post('/agregar',TokenValidation,proveedorController.agregar);		
+		this.router.post('/editar',TokenValidation,proveedorController.update); 		
+        this.router.delete('/eliminar/:id',TokenValidation,proveedorController.delete);
     }	
 }
 

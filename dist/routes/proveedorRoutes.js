@@ -20,7 +20,7 @@ class ProveedorRoutes {
         this.router.get('/listar', verifyToken_1.TokenValidation, proveedorController_1.default.listar);
         this.router.post('/agregar', verifyToken_1.TokenValidation, proveedorController_1.default.agregar);
         this.router.post('/editar', verifyToken_1.TokenValidation, proveedorController_1.default.update);
-        this.router.post('/eliminar', verifyToken_1.TokenValidation, proveedorController_1.default.delete);
+        this.router.delete('/eliminar/:id', verifyToken_1.TokenValidation, proveedorController_1.default.delete);
     }
 }
 const proveedorRoutes = new ProveedorRoutes();

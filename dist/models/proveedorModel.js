@@ -23,14 +23,6 @@ class ProveedorModel {
                 database: 'heroku_4505cc56058eb11',
                 connectionLimit: 10,
                 multipleStatements: false
-                /*
-                host: 'localhost',
-                user: 'root',
-                password: '',
-                database: 'heroku_4505cc56058eb11',
-                connectionLimit: 10,
-                multipleStatements: false
-                */
             });
         });
     }
@@ -48,15 +40,37 @@ class ProveedorModel {
             return null;
         });
     }
-    crearCompra(compra) {
+    buscarProveedor(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = (yield this.db.query('INSERT INTO pedidos SET ?', [compra]))[0].insertId;
+            const encontrado = yield this.db.query('SELECT * FROM proveedor WHERE Id = ?', [id]);
+            if (encontrado.length > 1)
+                return encontrado[0][0];
+            return null;
+        });
+    }
+    buscarNumeroDocumento(numeroDocumento) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const encontrado = yield this.db.query('SELECT * FROM proveedor WHERE NumeroDocumento = ?', [numeroDocumento]);
+            if (encontrado.length > 1)
+                return encontrado[0][0];
+            return null;
+        });
+    }
+    crearProveedor(proveedor) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = yield this.db.query('INSERT INTO proveedor SET ?', [proveedor]);
             return result;
         });
     }
-    crearCompraArticulo(compra) {
+    actualizarProveedor(proveedor, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = (yield this.db.query('INSERT INTO pedidos_articulos SET ?', [compra]))[0].affectArrow;
+            const result = (yield this.db.query('UPDATE proveedor SET ? WHERE Id = ?', [proveedor, id]))[0].affectedRows;
+            return result;
+        });
+    }
+    eliminarProveedor(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const result = (yield this.db.query('DELETE FROM proveedor WHERE Id = ?', [id]))[0].affectedRows;
             return result;
         });
     }
