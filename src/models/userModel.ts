@@ -15,6 +15,14 @@ class UserModel {
 			database: 'heroku_4505cc56058eb11',			
 			connectionLimit: 10,
 			multipleStatements: false
+			/*
+			host: 'localhost',
+			user: 'root',
+			password: '',
+			database: 'heroku_4505cc56058eb11',
+			connectionLimit: 10,
+			multipleStatements: false
+			*/
 		});
 	}
 

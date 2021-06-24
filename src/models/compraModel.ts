@@ -1,11 +1,3 @@
-/*******************************************************************************
-*		DNI:33.111.151
-*		APELLIDO/S: GOMEZ
-*		NOMBRE/S: LEANDRO
-*		PARCIAL: 2
-*		FECHA: 17/06/2021
-*******************************************************************************/
-
 import { createPool } from 'mysql2/promise';
 
 class CompraModel {
@@ -16,11 +8,20 @@ class CompraModel {
 
 	async config() {
 		this.db = await createPool({
+			host: 'us-cdbr-east-03.cleardb.com',
+			user: 'b0e0fd43ed8818',
+			password: '2b1f9d39',
+			database: 'heroku_4505cc56058eb11',			
+			connectionLimit: 10,
+			multipleStatements: false
+			/*
 			host: 'localhost',
 			user: 'root',
 			password: '',
-			database: 'pedidost2',
-			connectionLimit: 10
+			database: 'heroku_4505cc56058eb11',
+			connectionLimit: 10,
+			multipleStatements: false
+			*/
 		});
 	}
 
