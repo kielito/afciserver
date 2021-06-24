@@ -24,11 +24,12 @@ class IndexRoutes {
         });
         this.router.get('/test', (req, res) => __awaiter(this, void 0, void 0, function* () {
             const db = yield promise_1.createPool({
-                host: 'localhost',
-                user: 'root',
-                password: '',
+                host: 'us-cdbr-east-03.cleardb.com',
+                user: 'b0e0fd43ed8818',
+                password: '2b1f9d39',
                 database: 'heroku_4505cc56058eb11',
-                connectionLimit: 10
+                connectionLimit: 10,
+                multipleStatements: false
             });
             const result = (yield db.query("SELECT * FROM usuario"))[0];
             console.log(result);

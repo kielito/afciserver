@@ -15,11 +15,12 @@ class IndexRoutes{
 
 		this.router.get('/test',async (req:Request,res:Response)=>  {
 			const db = await createPool({
-				host: 'localhost',
-				user: 'root',
-				password: '',
-				database: 'heroku_4505cc56058eb11',
-				connectionLimit: 10
+				host: 'us-cdbr-east-03.cleardb.com',
+				user: 'b0e0fd43ed8818',
+				password: '2b1f9d39',
+				database: 'heroku_4505cc56058eb11',			
+				connectionLimit: 10,
+				multipleStatements: false
 			});
 
 			const result=(await db.query("SELECT * FROM usuario"))[0];	

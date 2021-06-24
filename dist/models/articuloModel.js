@@ -17,20 +17,20 @@ class ArticuloModel {
     config() {
         return __awaiter(this, void 0, void 0, function* () {
             this.db = yield promise_1.createPool({
-                /*
                 host: 'us-cdbr-east-03.cleardb.com',
                 user: 'b0e0fd43ed8818',
                 password: '2b1f9d39',
                 database: 'heroku_4505cc56058eb11',
                 connectionLimit: 10,
                 multipleStatements: false
-                */
+                /*
                 host: 'localhost',
                 user: 'root',
                 password: '',
                 database: 'heroku_4505cc56058eb11',
                 connectionLimit: 10,
                 multipleStatements: false
+                */
             });
         });
     }
