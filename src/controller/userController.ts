@@ -11,8 +11,8 @@ class UserController{
 
     public async login(req:Request,res:Response){
 		var { Usuario, Email, Password } = req.body;
-		Usuario = Usuario.replace(/[='"]/g,'');
-		Email = Email.replace(/[='"]/g,'');
+		//Usuario = Usuario.replace(/[='"]/g,'');
+		//Email = Email.replace(/[='"]/g,'');
 		console.log(Usuario, Email);
         const result = await userModel.buscarUsuario(Usuario, Email);
         
@@ -187,37 +187,6 @@ class UserController{
         req.session.destroy(()=>console.log("Sesion finalizada")); //Metodo para destruir datos asociados a la sesion
         res.redirect("/");
     }
-
-	/*public EnvioEmail(){        
-        
-		var transporter = nodemailer.createTransport({
-			service: "Gmail", //al usar un servicio bien conocido, no es necesario proveer un nombre de servidor.
-			auth: {
-			  user: 'webpecera@gmail.com',
-			  pass: 'PeceraSA2021_'
-			}
-		  });
-		  var mailOptions = {
-			from: 'webpecera@gmail.com',
-			to: 'damian_gomez_87@hotmail.com',
-			subject: 'Sending Email using Node.js',
-			text: 'That was easy!'
-		  };
-	  
-		  console.log("sending email", mailOptions);
-		  transporter.sendMail(mailOptions, function (error, info) {
-			console.log("senMail returned!");
-			if (error) {
-			  console.log("ERROR!!!!!!", error);
-			} else {
-			  console.log('Email sent: ' + info);
-			}
-		  });
-	  
-		  console.log("End of Script");
-
-	}*/
-
 
 }
 

@@ -14,27 +14,12 @@ class ProveedorModel {
 			database: 'heroku_4505cc56058eb11',			
 			connectionLimit: 10,
 			multipleStatements: false
-			/*
-			host: 'localhost',
-			user: 'root',
-			password: '',
-			database: 'heroku_4505cc56058eb11',
-			connectionLimit: 10,
-			multipleStatements: false
-			*/
 		});
 	}
 
 	async listar() {
 		const proveedores = await this.db.query('SELECT * FROM proveedor');		
 		return proveedores[0];
-	}
-
-	async listarPrecio(id: string) {
-		const precio = await this.db.query('SELECT precio FROM variedades where id = ?', [id]);		
-		if (precio.length > 1)
-			return precio[0][0];
-		return null;
 	}
 
 	async buscarProveedor(id: string) {

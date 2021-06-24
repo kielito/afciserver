@@ -16,9 +16,9 @@ class ArticuloRoutes{
         });   
               
         this.router.get('/listar',TokenValidation,articuloController.listar);		
-		this.router.post('/agregarproducto',TokenValidation,articuloController.agregarProductos);
+		this.router.post('/agregarproducto',TokenValidation,articuloController.agregar);
 		this.router.post('/editar',TokenValidation,articuloController.update);        
-        this.router.post('/eliminar',TokenValidation,articuloController.delete);
+        this.router.delete('/eliminar/:id',TokenValidation,articuloController.delete);
 
     }	
 }

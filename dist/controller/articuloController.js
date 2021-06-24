@@ -17,55 +17,67 @@ class ArticuloController {
     listar(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const articulos = yield articuloModel_1.default.listar();
-            return res.json(articulos);
+            const proveedores = yield articuloModel_1.default.listarProveedor();
+            return res.json({ articulo: articulos, proveedor: proveedores });
         });
     }
     //CRUD
-    agregarProductos(req, res) {
+    agregar(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const articulo = req.body;
-            let idProducto;
-            var texto_limpio = articulo.nombre.replace(/^\s+|\s+$/g, "");
-            if (texto_limpio === "") {
-                return res.status(500).json({ message: "El Nombre no puede estar vacío! " });
-            }
-            const busqueda = yield articuloModel_1.default.buscarCodigoProducto(articulo.CodigoProducto);
-            if (!busqueda) {
-                idProducto = yield articuloModel_1.default.crear(articulo.CodigoProducto, articulo.Descripcion);
+            const id = articulo.Id;
+            delete articulo.Id;
+            const IdProveedor = yield articuloModel_1.default.buscarProveedor(articulo.RazonSocial);
+            const busqueda = yield articuloModel_1.default.buscarId(id);
+            if (articulo.CodigoProducto === "" || articulo.Descripcion === "" || articulo.RazonSocial === "" || articulo.PrecioVenta === "") {
+                return res.status(400).json({ message: "Debe completar todos los datos!" });
             }
             else {
-                const resultBuscarProdProv = yield articuloModel_1.default.buscarProductoProveedor(busqueda.Id, articulo.IdProveedor);
-                if (resultBuscarProdProv)
-                    return res.status(500).json({ message: "El Producto ya se encuentra registrado para este proveedor!" });
+                const busqueda = yield articuloModel_1.default.buscarCodigoArticulo(articulo.CodigoProducto);
+                if (!busqueda) {
+                    articulo.IdProveedor = IdProveedor.Id;
+                    delete articulo.RazonSocial;
+                    console.log(articulo);
+                    const resultado = yield articuloModel_1.default.crear(articulo);
+                    if (!resultado)
+                        return res.status(400).json({ message: "No se pudo crear el proveedor!" });
+                    else {
+                        return res.status(200).json({ message: "Articulo Registrado correctamente!" });
+                    }
+                }
+                return res.status(500).json({ message: "El Articulo ya se encuentra registrado!" });
             }
-            const result = yield articuloModel_1.default.crearProductoProveedor(idProducto, articulo.IdProveedor, articulo.StockMinimo, articulo.StockActual, articulo.PrecioVenta);
-            if (!result)
-                return res.status(500).json({ message: "No se pudo crear el producto! " });
-            return res.status(200).json({ message: "Producto agregado correctamente! " });
         });
     }
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            var texto_limpio = req.body.nombre.replace(/^\s+|\s+$/g, "");
-            if (texto_limpio === "") {
-                return res.status(500).json({ message: "El Nombre no puede estar vacío! " });
+            const articulo = req.body;
+            const id = articulo.Id;
+            delete articulo.Id;
+            const IdProveedor = yield articuloModel_1.default.buscarProveedor(articulo.RazonSocial);
+            const busqueda = yield articuloModel_1.default.buscarId(id);
+            if (busqueda && IdProveedor) {
+                if (articulo.CodigoProducto === "" || articulo.Descripcion === "" || articulo.RazonSocial === "" || articulo.PrecioVenta === "") {
+                    return res.status(400).json({ message: "Debe completar todos los datos!" });
+                }
+                else {
+                    articulo.IdProveedor = IdProveedor.Id;
+                    delete articulo.RazonSocial;
+                    const result = yield articuloModel_1.default.actualizar(articulo, id);
+                    if (result) {
+                        return res.status(200).json({ message: "Articulo actualizado correctamente" });
+                    }
+                    return res.status(400).json({ message: "Error al actualizar los datos!" });
+                }
             }
-            const id = req.body.id;
-            delete req.body.id;
-            const result = yield articuloModel_1.default.actualizar(req.body, id);
-            if (result)
-                return res.status(200).json({ message: "El producto fue actualizado correctamente! " });
-            else
-                return res.status(500).json({ message: "El producto no se pudo actualizar!" });
+            return res.status(400).json({ message: "El Articulo no se encuentra registrado" });
         });
     }
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const articulo = req.body;
-            console.log(req.body);
-            yield articuloModel_1.default.eliminarProductoProveedor(articulo.id);
-            //await articuloModel.eliminar(articulo.id);
-            return res.status(200).json({ message: "Se eliminó el producto correctamente!" });
+            const { id } = req.params;
+            const result = yield articuloModel_1.default.eliminar(id);
+            return res.status(200).json({ message: "Se eliminó el Artículo correctamente!" });
         });
     }
 }

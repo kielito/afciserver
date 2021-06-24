@@ -23,14 +23,6 @@ class ProveedorModel {
                 database: 'heroku_4505cc56058eb11',
                 connectionLimit: 10,
                 multipleStatements: false
-                /*
-                host: 'localhost',
-                user: 'root',
-                password: '',
-                database: 'heroku_4505cc56058eb11',
-                connectionLimit: 10,
-                multipleStatements: false
-                */
             });
         });
     }
@@ -38,14 +30,6 @@ class ProveedorModel {
         return __awaiter(this, void 0, void 0, function* () {
             const proveedores = yield this.db.query('SELECT * FROM proveedor');
             return proveedores[0];
-        });
-    }
-    listarPrecio(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const precio = yield this.db.query('SELECT precio FROM variedades where id = ?', [id]);
-            if (precio.length > 1)
-                return precio[0][0];
-            return null;
         });
     }
     buscarProveedor(id) {

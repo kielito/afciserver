@@ -1,4 +1,11 @@
 "use strict";
+/*******************************************************************************
+*		DNI:33.111.151
+*		APELLIDO/S: GOMEZ
+*		NOMBRE/S: LEANDRO
+*		PARCIAL: 2
+*		FECHA: 17/06/2021
+*******************************************************************************/
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -17,20 +24,11 @@ class CompraModel {
     config() {
         return __awaiter(this, void 0, void 0, function* () {
             this.db = yield promise_1.createPool({
-                host: 'us-cdbr-east-03.cleardb.com',
-                user: 'b0e0fd43ed8818',
-                password: '2b1f9d39',
-                database: 'heroku_4505cc56058eb11',
-                connectionLimit: 10,
-                multipleStatements: false
-                /*
                 host: 'localhost',
                 user: 'root',
                 password: '',
-                database: 'heroku_4505cc56058eb11',
-                connectionLimit: 10,
-                multipleStatements: false
-                */
+                database: 'pedidost2',
+                connectionLimit: 10
             });
         });
     }

@@ -6,64 +6,71 @@ class ArticuloController{
 	
 	public async listar(req:Request,res:Response){        
         const articulos = await articuloModel.listar();
-        return res.json(articulos);	
+        const proveedores = await articuloModel.listarProveedor();       
+
+        return res.json({ articulo:articulos, proveedor: proveedores });
 	}    
     
     //CRUD
-    public async agregarProductos(req:Request,res:Response){
+    public async agregar(req:Request,res:Response){
 		const articulo = req.body;
-        let idProducto;
+        const id = articulo.Id;
+        delete articulo.Id;
 
-		var texto_limpio = articulo.nombre.replace(/^\s+|\s+$/g,"");
+        const IdProveedor = await articuloModel.buscarProveedor(articulo.RazonSocial);	
+        const busqueda = await articuloModel.buscarId(id);
 		
-        if(texto_limpio === "")
-		{
-            return res.status(500).json({ message:"El Nombre no puede estar vacío! "});
-		}
-		const busqueda = await articuloModel.buscarCodigoProducto(articulo.CodigoProducto);
-	
-		if (!busqueda) {				
-			idProducto = await articuloModel.crear(articulo.CodigoProducto, articulo.Descripcion);
-        }
-        else {
-            const resultBuscarProdProv = await articuloModel.buscarProductoProveedor(busqueda.Id, articulo.IdProveedor);
-            if (resultBuscarProdProv)
-                return res.status(500).json({ message:"El Producto ya se encuentra registrado para este proveedor!"});
-        }
+        if(articulo.CodigoProducto === "" || articulo.Descripcion === "" || articulo.RazonSocial === "" || articulo.PrecioVenta === ""){
+            return res.status(400).json({ message:"Debe completar todos los datos!"});
+        } else{
+            const busqueda = await articuloModel.buscarCodigoArticulo(articulo.CodigoProducto);
+        
+            if (!busqueda) {
+                articulo.IdProveedor = IdProveedor.Id;
+                delete articulo.RazonSocial;
 
-        const result = await articuloModel.crearProductoProveedor(idProducto, articulo.IdProveedor, articulo.StockMinimo, articulo.StockActual, articulo.PrecioVenta);
-        				
-		if (!result) 
-            return res.status(500).json({ message:"No se pudo crear el producto! "});					
-        return res.status(200).json({ message:"Producto agregado correctamente! "});        
+                console.log(articulo);				
+                const resultado = await articuloModel.crear(articulo);            
+                if (!resultado)
+                    return res.status(400).json({ message:"No se pudo crear el proveedor!"});
+                else{				
+                    return res.status(200).json({ message:"Articulo Registrado correctamente!"});
+			    }
+            }
+            return res.status(500).json({ message:"El Articulo ya se encuentra registrado!"});	
+        }
 	}
     
     public async update(req:Request,res:Response){        
-		var texto_limpio = req.body.nombre.replace(/^\s+|\s+$/g,"");
-		if(texto_limpio === "")
-		{
-			return res.status(500).json({ message:"El Nombre no puede estar vacío! "});
-		}
+		const articulo = req.body;
+        const id = articulo.Id;
+        delete articulo.Id;
 
-		const id = req.body.id;
-		delete req.body.id;
-				
-		const result = await articuloModel.actualizar(req.body, id);
+        const IdProveedor = await articuloModel.buscarProveedor(articulo.RazonSocial);	
+        const busqueda = await articuloModel.buscarId(id);
         
-		if(result)
-            return res.status(200).json({ message:"El producto fue actualizado correctamente! "});
-		else
-            return res.status(500).json({ message:"El producto no se pudo actualizar!"});
+        if(busqueda && IdProveedor){
+            if(articulo.CodigoProducto === "" || articulo.Descripcion === "" || articulo.RazonSocial === "" || articulo.PrecioVenta === ""){
+                return res.status(400).json({ message:"Debe completar todos los datos!"});
+            }		
+            else{
+                articulo.IdProveedor = IdProveedor.Id;
+                delete articulo.RazonSocial;
+                
+                const result = await articuloModel.actualizar(articulo, id);			
+                if(result) {			
+                    return res.status(200).json({ message:"Articulo actualizado correctamente"});
+                }
+                return res.status(400).json({ message:"Error al actualizar los datos!"});
+            }
+        }
+        return res.status(400).json({ message:"El Articulo no se encuentra registrado"});
 	}
 
 	public async delete(req:Request,res:Response){
-        const articulo = req.body;
-        console.log(req.body);
-        
-        await articuloModel.eliminarProductoProveedor(articulo.id);
-        //await articuloModel.eliminar(articulo.id);
-			
-        return res.status(200).json({ message:"Se eliminó el producto correctamente!"});			
+        const { id } = req.params;
+        const result = await articuloModel.eliminar(id);
+		return res.status(200).json({ message:"Se eliminó el Artículo correctamente!"});			
 	}
     //CRUD
 }

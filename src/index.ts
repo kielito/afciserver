@@ -80,7 +80,7 @@ class Server{
         this.app.use(indexRoutes);
 		this.app.use("/user",userRoutes);
 		this.app.use("/articulo",articuloRoutes);
-		this.app.use("/proveedor",ProveedorRoutes);		
+		this.app.use("/proveedor",ProveedorRoutes);	
 		this.app.use("/comentario",comentarioRoutes);	
     }
 

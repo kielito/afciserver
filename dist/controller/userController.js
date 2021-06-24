@@ -22,8 +22,8 @@ class UserController {
     login(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             var { Usuario, Email, Password } = req.body;
-            Usuario = Usuario.replace(/[='"]/g, '');
-            Email = Email.replace(/[='"]/g, '');
+            //Usuario = Usuario.replace(/[='"]/g,'');
+            //Email = Email.replace(/[='"]/g,'');
             console.log(Usuario, Email);
             const result = yield userModel_1.default.buscarUsuario(Usuario, Email);
             if (!result) {

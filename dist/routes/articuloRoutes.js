@@ -18,9 +18,9 @@ class ArticuloRoutes {
             res.render("partials/signinForm");
         });
         this.router.get('/listar', verifyToken_1.TokenValidation, articuloController_1.default.listar);
-        this.router.post('/agregarproducto', verifyToken_1.TokenValidation, articuloController_1.default.agregarProductos);
+        this.router.post('/agregarproducto', verifyToken_1.TokenValidation, articuloController_1.default.agregar);
         this.router.post('/editar', verifyToken_1.TokenValidation, articuloController_1.default.update);
-        this.router.post('/eliminar', verifyToken_1.TokenValidation, articuloController_1.default.delete);
+        this.router.delete('/eliminar/:id', verifyToken_1.TokenValidation, articuloController_1.default.delete);
     }
 }
 const articuloRoutes = new ArticuloRoutes();
