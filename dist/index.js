@@ -48,6 +48,7 @@ class Server {
             saveUninitialized: false //indica que no se guarde la sesion hasta que se inicialice
         }));
         // Archivos Publicos
+        this.app.use('/uploads', express_1.default.static(path_1.default.resolve('uploads')));
         this.app.use(express_1.default.static(path_1.default.join(__dirname, 'public'))); //metodo usado para indicar donde esta la carpeta public
         //Variables globales
         this.app.use((req, res, next) => {

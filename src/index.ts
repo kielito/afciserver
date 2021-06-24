@@ -61,6 +61,7 @@ class Server{
 		
 
 		// Archivos Publicos
+		this.app.use('/uploads', express.static(path.resolve('uploads')));
 		this.app.use(express.static(path.join(__dirname, 'public'))); //metodo usado para indicar donde esta la carpeta public
 
 

@@ -14,7 +14,7 @@ class ComentarioModel {
 			password: '2b1f9d39',
 			database: 'heroku_4505cc56058eb11',			
 			connectionLimit: 10,
-			multipleStatements: false				
+			multipleStatements: false
 			/*
 			host: 'localhost',
 			user: 'root',
