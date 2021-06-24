@@ -24,7 +24,7 @@ class UserModel {
 	}
 	
 	async buscarId(id: string) {
-		const encontrado: any = await this.db.query('SELECT * FROM usuario WHERE Activado = 1 AND Id = ?', [id]);		
+		const encontrado: any = await this.db.query('SELECT * FROM usuario WHERE Activado = "1" AND Id = ?', [id]);		
 		if (encontrado.length > 1)
 			return encontrado[0][0];
 		return null;
@@ -52,10 +52,7 @@ class UserModel {
 
 	
 	async actualizar(usuario: object, id: string) {
-		console.log(usuario);
-		console.log(id);
-		const result = (await this.db.query('UPDATE usuario SET ? WHERE Id = ?', [usuario, id]))[0].affectedRows;
-		console.log(result);
+		const result = (await this.db.query('UPDATE usuario SET ? WHERE Id = ?', [usuario, id]))[0].affectedRows;		
 		return result;
 	}
 

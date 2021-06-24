@@ -35,7 +35,7 @@ class UserController {
                     req.session.user = result;
                     req.session.auth = true;
                     const sesion = req.session.user;
-                    const token = jsonwebtoken_1.default.sign({ _id: result.id, _rol: result.rol }, "secretKey"); //Genera el Token del Usuario
+                    const token = jsonwebtoken_1.default.sign({ _id: result.id, _rol: result.rol }, "secretKey"); //Genera el Token del Usuario				
                     return res.status(200).json({ message: "Bienvenido " + result.nombre, sesion, token: token });
                 }
                 else {
@@ -104,7 +104,7 @@ class UserController {
                 //return res.redirect("./signup");
             }
             delete usuario.repassword;
-            const busqueda = yield userModel_1.default.buscarUsuario(usuario.nombre, usuario.email);
+            const busqueda = yield userModel_1.default.buscarUsuario(usuario.usuario, usuario.email);
             usuario.password = yield userModel_1.default.encriptarPassword(usuario.password);
             if (!busqueda) {
                 const result = yield userModel_1.default.crear(usuario);
@@ -125,34 +125,35 @@ class UserController {
     }
     update(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            /*if(!req.session.auth){
-                req.flash('error','Debe iniciar sesion para ver esta seccion'); //Dos parametros: primero variable, segundo el valor que tendra esa variable
-                res.redirect("../signin");
-            }*/
             const { id } = req.params;
-            const usuario = yield userModel_1.default.buscarId(id);
-            if (req.body.password === "") {
-                //req.flash('error','La clave no puede estar vacía!');
-                //return res.render("partials/update",{usuario, home:req.session.user, mi_session:true});
-                return res.status(400).json({ message: "La clave no puede estar vacía" });
-            }
-            if (req.body.rol === "") {
-                //req.flash('error','Debe seleccionar un Nuevo Rol!');
-                //return res.render("partials/update",{usuario, home:req.session.user, mi_session:true});
-                return res.status(400).json({ message: "Debe seleccionar un Nuevo Rol" });
-            }
-            else {
-                req.body.password = yield userModel_1.default.encriptarPassword(req.body.password);
-                const result = yield userModel_1.default.actualizar(req.body, id);
-                if (result) {
-                    /*req.flash('confirmacion','Usuario "' + req.body.nombre + '" actualizado correctamente!');
-                    return res.redirect("../control");*/
-                    return res.status(200).json({ message: "Usuario actualizado correctamente" });
+            const result = yield userModel_1.default.buscarId(id);
+            if (result) {
+                const usuario = req.body;
+                if (usuario.NPass) {
+                    if (usuario.NPass.replace(' ', '') === '') {
+                        delete usuario.NPass;
+                        delete usuario.Password;
+                    }
+                    else {
+                        usuario.Password = yield userModel_1.default.encriptarPassword(usuario.NPass);
+                        delete usuario.NPass;
+                    }
                 }
-                //req.flash('error','El usuario y/o email ya se encuentra registrado!'); //Dos parametros: primero variable, segundo el valor que tendra esa variable
-                //return res.render("partials/update",{usuario, home:req.session.user, mi_session:true});
-                return res.status(400).json({ message: "El usuario y/o email ya se encuentra registrado" });
+                else {
+                    delete usuario.Password;
+                }
+                if (usuario.Usuario === "" || usuario.Nombre === "" || usuario.Apellido === "" || usuario.Email === "" || usuario.Id === "" || usuario.Perfil === "") {
+                    return res.status(400).json({ message: "Debe completar todos los datos!" });
+                }
+                else {
+                    const result = yield userModel_1.default.actualizar(usuario, id);
+                    if (result) {
+                        return res.status(200).json({ message: "Usuario actualizado correctamente" });
+                    }
+                    return res.status(400).json({ message: "El usuario y/o email ya se encuentra registrado" });
+                }
             }
+            return res.status(400).json({ message: "El usuario no se encuentra registrado" });
         });
     }
     delete(req, res) {

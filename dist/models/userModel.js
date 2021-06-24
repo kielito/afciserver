@@ -49,7 +49,7 @@ class UserModel {
     }
     buscarId(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const encontrado = yield this.db.query('SELECT * FROM usuario WHERE Activado = 1 AND Id = ?', [id]);
+            const encontrado = yield this.db.query('SELECT * FROM usuario WHERE Activado = "1" AND Id = ?', [id]);
             if (encontrado.length > 1)
                 return encontrado[0][0];
             return null;
@@ -79,10 +79,7 @@ class UserModel {
     }
     actualizar(usuario, id) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(usuario);
-            console.log(id);
             const result = (yield this.db.query('UPDATE usuario SET ? WHERE Id = ?', [usuario, id]))[0].affectedRows;
-            console.log(result);
             return result;
         });
     }
