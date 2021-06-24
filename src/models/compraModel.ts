@@ -1,11 +1,3 @@
-/*******************************************************************************
-*		DNI:33.111.151
-*		APELLIDO/S: GOMEZ
-*		NOMBRE/S: LEANDRO
-*		PARCIAL: 2
-*		FECHA: 17/06/2021
-*******************************************************************************/
-
 import { createPool } from 'mysql2/promise';
 
 class CompraModel {
@@ -19,8 +11,9 @@ class CompraModel {
 			host: 'localhost',
 			user: 'root',
 			password: '',
-			database: 'pedidost2',
-			connectionLimit: 10
+			database: 'heroku_4505cc56058eb11',
+			connectionLimit: 10,
+			multipleStatements: false
 		});
 	}
 

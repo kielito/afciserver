@@ -17,7 +17,7 @@ class UserRoutes{
 			req.session.user={};            
             res.render("partials/signinForm");
         });        
-
+        
         //archivos
 		this.router.get('/archivos/:id', buscarArchivo);
         this.router.delete('/archivos/:id',eliminarArchivo);

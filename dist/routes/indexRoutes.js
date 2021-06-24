@@ -27,10 +27,10 @@ class IndexRoutes {
                 host: 'localhost',
                 user: 'root',
                 password: '',
-                database: 'pedidost2',
+                database: 'heroku_4505cc56058eb11',
                 connectionLimit: 10
             });
-            const result = (yield db.query("SELECT * FROM usuarios"))[0];
+            const result = (yield db.query("SELECT * FROM usuario"))[0];
             console.log(result);
             res.send("Test OK!!! Revisar filas en consola del servidor");
         }));

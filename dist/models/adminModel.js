@@ -20,7 +20,7 @@ class AdminModel {
                 host: 'localhost',
                 user: 'root',
                 password: '',
-                database: 'pedidost2',
+                database: 'heroku_4505cc56058eb11',
                 connectionLimit: 10
             });
         });

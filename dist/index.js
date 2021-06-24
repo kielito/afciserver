@@ -12,6 +12,7 @@ const path_1 = __importDefault(require("path"));
 const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 const articuloRoutes_1 = __importDefault(require("./routes/articuloRoutes"));
 const proveedorRoutes_1 = __importDefault(require("./routes/proveedorRoutes"));
+const comentarioRoutes_1 = __importDefault(require("./routes/comentarioRoutes"));
 const express_session_1 = __importDefault(require("express-session"));
 const connect_flash_1 = __importDefault(require("connect-flash"));
 class Server {
@@ -61,6 +62,7 @@ class Server {
         this.app.use("/user", userRoutes_1.default);
         this.app.use("/articulo", articuloRoutes_1.default);
         this.app.use("/proveedor", proveedorRoutes_1.default);
+        this.app.use("/comentario", comentarioRoutes_1.default);
     }
     start() {
         this.app.listen(this.app.get('port'), () => {
