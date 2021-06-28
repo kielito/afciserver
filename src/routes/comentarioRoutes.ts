@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import {TokenValidation} from "../lib/verifyToken";
 import comentarioController from '../controller/comentarioController'; //ruta relativa
-import { crearArchivo, buscarArchivos, buscarArchivo, eliminarArchivo } from '../controller/archivoController';
+import archivoController from '../controller/archivoController';
 import multer from '../lib/multer';
 
 class ComentarioRoutes{
@@ -18,10 +18,10 @@ class ComentarioRoutes{
         });        
 
         //archivos
-		this.router.get('/archivos/:id', buscarArchivo);
-        this.router.delete('/archivos/:id',eliminarArchivo);
-        this.router.get('/archivos', buscarArchivos);
-		this.router.post('/archivos', multer.single('image'), crearArchivo);
+		this.router.get('/archivos/:id', TokenValidation, archivoController.buscarArchivo);
+        this.router.delete('/archivos/:id', TokenValidation, archivoController.eliminarArchivo);
+        this.router.get('/archivos', TokenValidation, archivoController.buscarArchivos);
+		this.router.post('/archivos', TokenValidation, multer.single('image'), archivoController.crearArchivo);
 
         //CRUD
         this.router.get('/list',TokenValidation,comentarioController.list);

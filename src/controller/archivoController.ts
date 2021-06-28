@@ -3,13 +3,16 @@ import  userModel from '../models/userModel';
 import path from 'path';
 import fs from 'fs-extra';
 
-export async function buscarArchivos(req: Request, res: Response) {
+
+class ArchivoController{
+
+public async buscarArchivos(req: Request, res: Response) {
     const archivos = await userModel.budcarArchivos();
     
     return res.json(archivos);
 }
 
-export async function buscarArchivo(req: Request, res: Response) {
+public async buscarArchivo(req: Request, res: Response) {
     const { id } = req.params;
     
     const archivo = await userModel.budcarArchivo(id);
@@ -17,7 +20,7 @@ export async function buscarArchivo(req: Request, res: Response) {
     return res.json(archivo);
 }
 
-export async function crearArchivo(req: Request, res: Response) {
+public async crearArchivo(req: Request, res: Response) {
     //const {titulo, descripcion } = req.body;
     console.log('llega');
     console.log(req.file);
@@ -33,7 +36,7 @@ export async function crearArchivo(req: Request, res: Response) {
     })
 }
 
-export async function eliminarArchivo(req: Request, res: Response) {
+public async eliminarArchivo(req: Request, res: Response) {
     const { id } = req.params; 
 
     const archivo =  await userModel.budcarArchivo(id);
@@ -45,3 +48,8 @@ export async function eliminarArchivo(req: Request, res: Response) {
     } else 
         return res.json({message: 'No se encontró el Archivo'});
 }
+
+}
+
+const archivoController = new ArchivoController(); 
+export default archivoController;

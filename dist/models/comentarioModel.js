@@ -51,7 +51,7 @@ class ComentarioModel {
     }
     crear(comentario) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = (yield this.db.query('INSERT INTO comentario SET ?', [comentario]))[0].insertId;
+            const result = yield this.db.query('INSERT INTO comentario SET ?', [comentario]);
             return result;
         });
     }

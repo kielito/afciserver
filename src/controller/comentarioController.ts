@@ -19,17 +19,23 @@ class UserController {
 
     public async add(req: Request, res: Response) {
         const comentario = req.body;
-        if (comentario.descripcion.length < 10) {
+        
+        if (comentario.Comentario.length < 1) {
+            console.log('entra')
             return res.status(500).json({ message: "El comentario debe superar los 10 caracteres!" });
         }
-        if (comentario.imagen.length < 5) {
+        else if (comentario.Titulo.length < 1) {
+            console.log('entra2')
             return res.status(500).json({ message: "El titulo debe superear los 5 caracteres!" });
-        }
-        const result = await comentarioModel.crear(comentario);
-        if (!result)
-            return res.status(400).json({ message: "No se pudo crear el comentario" });
-        else {
-            return res.status(200).json({ message: "Comentario creado " });
+        } else {
+            console.log('entra3')
+            console.log(comentario)
+            const result = await comentarioModel.crear(comentario);
+            if (!result)
+                return res.status(400).json({ message: "No se pudo crear el comentario" });
+            else {
+                return res.status(200).json({ message: "Comentario creado " });
+            }
         }
     }
 

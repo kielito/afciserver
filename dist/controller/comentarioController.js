@@ -32,17 +32,23 @@ class UserController {
     add(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const comentario = req.body;
-            if (comentario.descripcion.length < 10) {
+            if (comentario.Comentario.length < 1) {
+                console.log('entra');
                 return res.status(500).json({ message: "El comentario debe superar los 10 caracteres!" });
             }
-            if (comentario.imagen.length < 5) {
+            else if (comentario.Titulo.length < 1) {
+                console.log('entra2');
                 return res.status(500).json({ message: "El titulo debe superear los 5 caracteres!" });
             }
-            const result = yield comentarioModel_1.default.crear(comentario);
-            if (!result)
-                return res.status(400).json({ message: "No se pudo crear el comentario" });
             else {
-                return res.status(200).json({ message: "Comentario creado " });
+                console.log('entra3');
+                console.log(comentario);
+                const result = yield comentarioModel_1.default.crear(comentario);
+                if (!result)
+                    return res.status(400).json({ message: "No se pudo crear el comentario" });
+                else {
+                    return res.status(200).json({ message: "Comentario creado " });
+                }
             }
         });
     }

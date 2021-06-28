@@ -40,7 +40,7 @@ class ComentarioModel {
 	}
 
 	async crear(comentario: object) {		
-		const result = (await this.db.query('INSERT INTO comentario SET ?', [comentario]))[0].insertId;		
+		const result = await this.db.query('INSERT INTO comentario SET ?', [comentario]);		
 		return result;		
 	}
 	

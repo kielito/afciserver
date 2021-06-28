@@ -53,10 +53,11 @@ class UserController {
             const id = req.params.id;
             const result = yield userModel_1.default.habilitar(id);
             if (result) {
-                return res.status(200).json("Usuario habilitado correctamente");
+                const usuario = yield userModel_1.default.buscarId(id);
+                return res.status(200).json("Usuario '" + usuario.Usuario + "' activado correctamente");
             }
             else {
-                return res.status(400).json({ message: "El usuario no se encuentra registrado" });
+                return res.status(400).json({ message: "No se encontró ningún usuario para activar" });
             }
         });
     }

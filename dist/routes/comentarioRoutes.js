@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const verifyToken_1 = require("../lib/verifyToken");
 const comentarioController_1 = __importDefault(require("../controller/comentarioController")); //ruta relativa
-const archivoController_1 = require("../controller/archivoController");
+const archivoController_1 = __importDefault(require("../controller/archivoController"));
 const multer_1 = __importDefault(require("../lib/multer"));
 class ComentarioRoutes {
     constructor() {
@@ -21,10 +21,10 @@ class ComentarioRoutes {
             res.render("partials/signinForm");
         });
         //archivos
-        this.router.get('/archivos/:id', archivoController_1.buscarArchivo);
-        this.router.delete('/archivos/:id', archivoController_1.eliminarArchivo);
-        this.router.get('/archivos', archivoController_1.buscarArchivos);
-        this.router.post('/archivos', multer_1.default.single('image'), archivoController_1.crearArchivo);
+        this.router.get('/archivos/:id', verifyToken_1.TokenValidation, archivoController_1.default.buscarArchivo);
+        this.router.delete('/archivos/:id', verifyToken_1.TokenValidation, archivoController_1.default.eliminarArchivo);
+        this.router.get('/archivos', verifyToken_1.TokenValidation, archivoController_1.default.buscarArchivos);
+        this.router.post('/archivos', verifyToken_1.TokenValidation, multer_1.default.single('image'), archivoController_1.default.crearArchivo);
         //CRUD
         this.router.get('/list', verifyToken_1.TokenValidation, comentarioController_1.default.list);
         this.router.get('/find/:id', verifyToken_1.TokenValidation, comentarioController_1.default.find);

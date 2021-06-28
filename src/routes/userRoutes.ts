@@ -1,8 +1,6 @@
 import { Router, Request, Response } from 'express';
 import {TokenValidation} from "../lib/verifyToken";
 import userController from '../controller/userController'; //ruta relativa
-import { crearArchivo, buscarArchivos, buscarArchivo, eliminarArchivo } from '../controller/archivoController';
-import multer from '../lib/multer';
 
 class UserRoutes{
 	public router: Router = Router();
@@ -18,20 +16,13 @@ class UserRoutes{
             res.render("partials/signinForm");
         });        
 
-        //archivos
-		this.router.get('/archivos/:id', buscarArchivo);
-        this.router.delete('/archivos/:id',eliminarArchivo);
-        this.router.get('/archivos', buscarArchivos);
-		this.router.post('/archivos', multer.single('image'), crearArchivo);
-        
-
         //inicio sesion
         this.router.get('/signin',userController.signin); 
         this.router.post('/signin',userController.login); //Paso 15
 
         //registro - Paso 18
-		this.router.get('/signup',userController.signup);
-		this.router.post('/signup',userController.addUser);
+		this.router.get('/signup',TokenValidation,userController.signup);
+		this.router.post('/signup',TokenValidation,userController.addUser);
 
         
         //Home del usuario        
@@ -56,12 +47,12 @@ class UserRoutes{
         this.router.get('/activate/:id',userController.activar);
         
         //CONTROL
-        this.router.get('/control',userController.control);        
+        this.router.get('/control',TokenValidation,userController.control);        
         //this.router.get('/procesar/id',userController.procesar);
         //this.router.post('/procesar/:id',userController.procesar);        
 
         //CIERRE DE SESION
-        this.router.get('/salir',userController.endSession);
+        this.router.get('/salir',TokenValidation,userController.endSession);
         
     }	
 }

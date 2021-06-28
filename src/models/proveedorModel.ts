@@ -7,8 +7,7 @@ class ProveedorModel {
 	}
 
 	async config() {
-		this.db = await createPool({
-			
+		this.db = await createPool({			
 			host: 'us-cdbr-east-03.cleardb.com',
 			user: 'b0e0fd43ed8818',
 			password: '2b1f9d39',
