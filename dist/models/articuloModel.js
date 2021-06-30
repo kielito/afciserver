@@ -29,8 +29,7 @@ class ArticuloModel {
                 password: '',
                 database: 'heroku_4505cc56058eb11',
                 connectionLimit: 10,
-                multipleStatements: false
-                */
+                multipleStatements: false	*/
             });
         });
     }

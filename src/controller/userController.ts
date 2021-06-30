@@ -26,7 +26,9 @@ class UserController{
 				req.session.auth=true;
 
 				const sesion = req.session.user;
-				const token:string=jwt.sign({_id: result.id, _rol: result.rol},"secretKey"); //Genera el Token del Usuario
+				const token:string=jwt.sign({_id: result.id, _rol: result.rol},"secretKey", {
+					expiresIn: '1d'
+				}); //Genera el Token del Usuario
 				
 				return res.status(200).json({ message:"Bienvenido "+result.nombre, sesion,token:token });
 				

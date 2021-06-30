@@ -7,7 +7,7 @@ exports.TokenValidation = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const TokenValidation = (req, res, next) => {
     var _a;
-    //Recuperamos la cabecera y la dividimos en 2
+    //Recuperamos la cabecera y la dividimos en 2    
     let token = ((_a = req.header("Authotization")) === null || _a === void 0 ? void 0 : _a.split('Baerer ', 2));
     //tomamos la parte que nos interesa, el token, para despues evaluar.
     token = token['1'];

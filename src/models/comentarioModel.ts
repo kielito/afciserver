@@ -1,5 +1,4 @@
 import { createPool } from 'mysql2/promise';
-import  bcryptjs from 'bcryptjs';
 
 class ComentarioModel {
 	private db: any;
@@ -21,8 +20,7 @@ class ComentarioModel {
 			password: '',
 			database: 'heroku_4505cc56058eb11',
 			connectionLimit: 10,
-			multipleStatements: false
-			*/
+			multipleStatements: false	*/		
 		});
 	}
 

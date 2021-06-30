@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const verifyToken_1 = require("../lib/verifyToken");
 const userController_1 = __importDefault(require("../controller/userController")); //ruta relativa
+const validation_1 = require("../lib/validation");
+const register_schema_1 = require("../lib/register-schema");
 class UserRoutes {
     constructor() {
         this.router = express_1.Router();
@@ -23,7 +25,7 @@ class UserRoutes {
         this.router.post('/signin', userController_1.default.login); //Paso 15
         //registro - Paso 18
         this.router.get('/signup', verifyToken_1.TokenValidation, userController_1.default.signup);
-        this.router.post('/signup', verifyToken_1.TokenValidation, userController_1.default.addUser);
+        this.router.post('/signup', verifyToken_1.TokenValidation, register_schema_1.registerSchema, validation_1.validateRequestSchema, userController_1.default.addUser);
         //Home del usuario        
         this.router.get('/home', verifyToken_1.TokenValidation, userController_1.default.home);
         this.router.post('/home', verifyToken_1.TokenValidation, userController_1.default.home);

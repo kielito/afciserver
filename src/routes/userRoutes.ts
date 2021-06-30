@@ -1,6 +1,8 @@
 import { Router, Request, Response } from 'express';
 import {TokenValidation} from "../lib/verifyToken";
 import userController from '../controller/userController'; //ruta relativa
+import { validateRequestSchema } from '../lib/validation';
+import { registerSchema } from '../lib/register-schema';
 
 class UserRoutes{
 	public router: Router = Router();
@@ -22,7 +24,7 @@ class UserRoutes{
 
         //registro - Paso 18
 		this.router.get('/signup',TokenValidation,userController.signup);
-		this.router.post('/signup',TokenValidation,userController.addUser);
+		this.router.post('/signup',TokenValidation,registerSchema, validateRequestSchema, userController.addUser);
 
         
         //Home del usuario        

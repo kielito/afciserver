@@ -1,7 +1,5 @@
 import { Request, Response } from 'express';
 import comentarioModel from '../models/comentarioModel';
-import jwt from "jsonwebtoken";
-import { EnvioEmail } from "../lib/sendEmail";
 
 class UserController {
     //CRUD

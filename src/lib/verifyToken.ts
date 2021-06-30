@@ -9,7 +9,7 @@ interface IPayload {
 }
 
 export const TokenValidation = (req:Request, res:Response, next:NextFunction) => {
-	//Recuperamos la cabecera y la dividimos en 2
+	//Recuperamos la cabecera y la dividimos en 2    
     let token:any = (req.header("Authotization")?.split('Baerer ',2));
     
     //tomamos la parte que nos interesa, el token, para despues evaluar.
