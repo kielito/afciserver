@@ -9,20 +9,22 @@ class UserModel {
 
 	async config() {
 		this.db = await createPool({
-			/*
-			host: 'us-cdbr-east-03.cleardb.com',
-			user: 'b0e0fd43ed8818',
-			password: '2b1f9d39',
-			database: 'heroku_4505cc56058eb11',			
+			
+			host: 'us-cdbr-east-04.cleardb.com',
+			user: 'b603cf410ef897',
+			password: 'd43c3a4c',
+			database: 'heroku_8d9dee01461c848',			
 			connectionLimit: 10,
 			multipleStatements: false
-			*/
+			
+			/*
 			host: 'localhost',
 			user: 'root',
 			password: '',
 			database: 'afci',
 			connectionLimit: 10,
 			multipleStatements: false	
+			*/
 		});
 	}
 
