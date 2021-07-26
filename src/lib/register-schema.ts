@@ -1,11 +1,7 @@
 import { body, oneOf } from 'express-validator';
 
 const schema = [
-    body('usuario')
-        .isLength({ min: 3, max: 20})
-        .withMessage('Debe contener minimo 3 caracteres y maximo 20!')
-        .matches(/^[a-z]$/)
-        .withMessage('Debe ser alfabético'),
+    /*
     body('nombre')
         .isLength({ min: 3, max: 20})
         .withMessage('Debe contener minimo 3 caracteres y maximo 20!')
@@ -16,6 +12,7 @@ const schema = [
         .withMessage('Debe contener minimo 3 caracteres y maximo 20!')
         .matches(/^[A-Za-z/g]+$/g)
         .withMessage('Debe ser alfabético'),
+    */
     body('password')
         .isLength({ min: 6, max: 20})
         .withMessage('Debe contener minimo 6 caracteres y maximo 20!')

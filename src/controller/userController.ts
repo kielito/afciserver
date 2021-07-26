@@ -1,18 +1,14 @@
 import {Request, Response} from 'express';
 import  userModel from '../models/userModel';
 import jwt from "jsonwebtoken";
-import { EnvioEmail } from "../lib/sendEmail";
 
 class UserController{
-
 	public signin(req:Request,res:Response){		
         res.render("partials/signinForm");
-	}
+	}	
 
     public async login(req:Request,res:Response){
 		var { Usuario, Email, Password } = req.body;
-		//Usuario = Usuario.replace(/[='"]/g,'');
-		//Email = Email.replace(/[='"]/g,'');
 		console.log(Usuario, Email);
         const result = await userModel.buscarUsuario(Usuario, Email);
         
@@ -38,35 +34,6 @@ class UserController{
 		}			
 	}
 
-    //REGISTRO
-	public signup(req:Request,res:Response){		
-		//res.render("partials/signupForm");
-	}
-
-	public async activar(req:Request,res:Response){
-		const id = req.params.id;
-		const result = await userModel.habilitar(id);
-		
-		if(result) {
-			const usuario = await userModel.buscarId(id);
-			return res.status(200).json("Usuario '" + usuario.Usuario + "' activado correctamente");
-		} else {
-			return res.status(400).json({ message:"No se encontró ningún usuario para activar"});
-		}
-	}
-
-	//HOME
-    public async home(req:Request,res:Response){	
-		/*res.render("partials/home");
-		return;
-		/*if(!req.session.auth){
-            req.flash('error','Debes iniciar sesion para ver esta seccion!');
-			res.redirect("./signin");
-        }		
-		res.render("partials/home");*/
-	}
-	
-
 	//CRUD
 	public async list(req:Request,res:Response){		
         const usuarios = await userModel.listar();   
@@ -77,29 +44,24 @@ class UserController{
         const { id } = req.params;
         const usuario = await userModel.buscarId(id);
         if (usuario)
-            return res.json(usuario);
-        
-		//req.flash('error','User doesnt exists!');
+            return res.json(usuario);        		
 	}
 
 	public async addUser(req:Request,res:Response){
-		const usuario = req.body;
-		
+		const usuario = req.body;		
 		if(usuario.nombre.length < 2){
 			return res.status(500).json({ message:"El Usuario no cumple con las reglas!"}); //Dos parametros: primero variable, segundo el valor que tendra esa variable
-			//return res.redirect("./signup");
-		}		
+		}	
+
 		if(usuario.password.length < 5){
 			return res.status(500).json({ message:"La clave no cumple con las reglas!"}); //Dos parametros: primero variable, segundo el valor que tendra esa variable
-			//return res.redirect("./signup");
 		}
 
 		if(usuario.password !== usuario.repassword){
 			return res.status(500).json({ message:"Las claves deben ser iguales!"}); //Dos parametros: primero variable, segundo el valor que tendra esa variable
-			//return res.redirect("./signup");
 		}
-		delete usuario.repassword;
 
+		delete usuario.repassword;
         const busqueda = await userModel.buscarUsuario(usuario.usuario, usuario.email);		
 		usuario.password = await userModel.encriptarPassword(usuario.password);
 
@@ -109,10 +71,8 @@ class UserController{
 			if (!result)
 				return res.status(400).json({ message:"No se pudo crear el usuario "});
 			else{
-				EnvioEmail(usuario.email, result);
 				return res.status(200).json({ message:"Usuario Registrado "});
 			}
-            //return res.redirect("./signin");
         }
 		return res.status(500).json({ message:"El usuario y/o email ya se encuentra registrado!"});			
 	}
@@ -153,35 +113,9 @@ class UserController{
 	public async delete(req:Request,res:Response){        
 		const { id } = req.params; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
         const result = await userModel.eliminar(id);				
-		return res.status(200).json({ message:"Se eliminó el Usuario correctamente!"});
+		return res.status(200).json({ message:"Se eliminó el usuario correctamente!"});
 	}
-
 	//FIN CRUD
-
-
-	public async control(req:Request,res:Response){		
-        /*if(!req.session.auth){
-            req.flash('error','Debe iniciar sesion para ver esta seccion'); //Dos parametros: primero variable, segundo el valor que tendra esa variable
-			res.redirect("./signin");
-        }
-        const usuarios = await userModel.listar();       
-        res.render('partials/controls', { users: usuarios, mi_session:true });	*/
-	}	
-
-	public async procesar(req:Request,res:Response){
-        /*if(!req.session.auth){            
-			req.flash('error','Debes iniciar sesion para ver esta seccion');
-			return res.redirect("../signin");
-        }
-
-		const { id } = req.params; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
-        const usuario = await userModel.buscarId(id);
-
-        if(usuario !== undefined){            
-			res.render("partials/update",{usuario, home:req.session.user, mi_session:true});
-        }*/
-	}
-
 
 	//METODO PARA CERRAR LA SESION
 	public endSession(req: Request, res: Response){        
@@ -190,7 +124,6 @@ class UserController{
         req.session.destroy(()=>console.log("Sesion finalizada")); //Metodo para destruir datos asociados a la sesion
         res.redirect("/");
     }
-
 }
 
 const userController = new UserController(); 

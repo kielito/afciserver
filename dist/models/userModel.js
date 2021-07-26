@@ -32,19 +32,20 @@ class UserModel {
     config() {
         return __awaiter(this, void 0, void 0, function* () {
             this.db = yield promise_1.createPool({
+                /*
                 host: 'us-cdbr-east-03.cleardb.com',
                 user: 'b0e0fd43ed8818',
                 password: '2b1f9d39',
                 database: 'heroku_4505cc56058eb11',
                 connectionLimit: 10,
                 multipleStatements: false
-                /*
+                */
                 host: 'localhost',
                 user: 'root',
                 password: '',
-                database: 'heroku_4505cc56058eb11',
+                database: 'afci',
                 connectionLimit: 10,
-                multipleStatements: false	*/
+                multipleStatements: false
             });
         });
     }
@@ -56,7 +57,7 @@ class UserModel {
     }
     buscarId(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const encontrado = yield this.db.query('SELECT * FROM usuario WHERE Activado = "1" AND Id = ?', [id]);
+            const encontrado = yield this.db.query('SELECT * FROM usuario WHERE Id = ?', [id]);
             if (encontrado.length > 1)
                 return encontrado[0][0];
             return null;
@@ -64,7 +65,7 @@ class UserModel {
     }
     buscarNombre(nombre) {
         return __awaiter(this, void 0, void 0, function* () {
-            const encontrado = yield this.db.query('SELECT * FROM usuario WHERE Usuario = ?', [nombre]);
+            const encontrado = yield this.db.query('SELECT * FROM usuario WHERE Nombre = ?', [nombre]);
             if (encontrado.length > 1)
                 return encontrado[0][0];
             return null;
@@ -72,7 +73,7 @@ class UserModel {
     }
     buscarUsuario(usuario, email) {
         return __awaiter(this, void 0, void 0, function* () {
-            const encontrado = yield this.db.query('SELECT * FROM usuario WHERE Activado = "1" AND Usuario = ? AND Email = ?', [usuario, email]);
+            const encontrado = yield this.db.query('SELECT * FROM usuario WHERE Usuario = ? AND Email = ?', [usuario, email]);
             if (encontrado.length > 1)
                 return encontrado[0][0];
             return null;
@@ -95,37 +96,6 @@ class UserModel {
             const user = (yield this.db.query('DELETE FROM usuario WHERE Id = ?', [id]))[0].affectedRows;
             console.log(user);
             return user;
-        });
-    }
-    habilitar(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const result = (yield this.db.query('UPDATE usuario SET Activado = "1" WHERE Activado = "0" AND Id = ?', [id]))[0].affectedRows;
-            return result;
-        });
-    }
-    crearArchivo(archivo) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const result = (yield this.db.query('INSERT INTO archivo SET ?', [archivo]))[0].insertId;
-            return result;
-        });
-    }
-    budcarArchivos() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const result = yield this.db.query('SELECT * FROM archivo');
-            return result[0];
-        });
-    }
-    budcarArchivo(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const result = (yield this.db.query('SELECT * FROM archivo WHERE Id = ?', [id]));
-            return result[0][0];
-            ;
-        });
-    }
-    eliminarArchivo(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const result = (yield this.db.query('DELETE FROM archivo WHERE Id = ?', [id]))[0].affectedRows;
-            return result;
         });
     }
 }

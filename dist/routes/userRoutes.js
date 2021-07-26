@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const verifyToken_1 = require("../lib/verifyToken");
-const userController_1 = __importDefault(require("../controller/userController")); //ruta relativa
+const userController_1 = __importDefault(require("../controller/userController"));
 const validation_1 = require("../lib/validation");
 const register_schema_1 = require("../lib/register-schema");
 class UserRoutes {
@@ -22,28 +22,15 @@ class UserRoutes {
         });
         //inicio sesion
         this.router.get('/signin', userController_1.default.signin);
-        this.router.post('/signin', userController_1.default.login); //Paso 15
-        //registro - Paso 18
-        this.router.get('/signup', verifyToken_1.TokenValidation, userController_1.default.signup);
+        this.router.post('/signin', userController_1.default.login);
         this.router.post('/signup', verifyToken_1.TokenValidation, register_schema_1.registerSchema, validation_1.validateRequestSchema, userController_1.default.addUser);
-        //Home del usuario        
-        this.router.get('/home', verifyToken_1.TokenValidation, userController_1.default.home);
-        this.router.post('/home', verifyToken_1.TokenValidation, userController_1.default.home);
         //CRUD
         this.router.get('/list', verifyToken_1.TokenValidation, userController_1.default.list);
         this.router.get('/find/:id', verifyToken_1.TokenValidation, userController_1.default.find);
         this.router.post('/add', verifyToken_1.TokenValidation, userController_1.default.addUser);
-        this.router.get('/update/:id', verifyToken_1.TokenValidation, userController_1.default.procesar); //dibujo la vista		
         this.router.post('/update/:id', verifyToken_1.TokenValidation, userController_1.default.update); //almaceno los datos modificados
-        //this.router.put('/update/:id',userController.procesar);
         this.router.delete('/delete/:id', verifyToken_1.TokenValidation, userController_1.default.delete);
-        //this.router.get('/delete/:id',TokenValidation,userController.delete);
         //Fin CRUD
-        this.router.get('/activate/:id', userController_1.default.activar);
-        //CONTROL
-        this.router.get('/control', verifyToken_1.TokenValidation, userController_1.default.control);
-        //this.router.get('/procesar/id',userController.procesar);
-        //this.router.post('/procesar/:id',userController.procesar);        
         //CIERRE DE SESION
         this.router.get('/salir', verifyToken_1.TokenValidation, userController_1.default.endSession);
     }

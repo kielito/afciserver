@@ -23,7 +23,6 @@ export const TokenValidation = (req:Request, res:Response, next:NextFunction) =>
         console.log(payload);
         //req.session.user_id = payload._rol;
         //req.userdId = payload._id;
-        
         next();
 
     } catch(error) {

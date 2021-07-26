@@ -5,12 +5,8 @@ import indexRoutes from './routes/indexRoutes';
 import exphbs from "express-handlebars";
 import path from "path";
 import userRoutes from './routes/userRoutes';
-import articuloRoutes from './routes/articuloRoutes';
-import ProveedorRoutes from './routes/proveedorRoutes';
-import comentarioRoutes from './routes/comentarioRoutes';
 import session from "express-session";
 import flash from "connect-flash";
-
 
 declare module 'express-session' { //Se redefine para declarar 2 variables (user y auth)
 	export interface SessionData {
@@ -19,7 +15,6 @@ declare module 'express-session' { //Se redefine para declarar 2 variables (user
 	  user_id: string
 	}
   }
-
 
 class Server{
 	public app:Application;
@@ -47,8 +42,7 @@ class Server{
         this.app.use(morgan('dev'));
         this.app.use(cors()); //iniciamos cors
         this.app.use(express.json()); //habilitamos el intercambio de objetos json entre aplicaciones
-        this.app.use(express.urlencoded({extended:true}));//Paso 21 - habilitamos para recibir datos a traves de formularios html.
-		//this.app.use(express.static('public'));
+        this.app.use(express.urlencoded({extended:true}));//habilitamos para recibir datos a traves de formularios html.
 		this.app.use(flash());
 		this.app.use(express.static(path.resolve('uploads')));
 
@@ -57,13 +51,12 @@ class Server{
 			secret:'secret_supersecret',//sirve para crear el hash del SSID unico
 			resave:false,//evita el guardado de sesion sin modificaciones
 			saveUninitialized:false //indica que no se guarde la sesion hasta que se inicialice
-		}));
-		
+		}));		
 
 		// Archivos Publicos
 		this.app.use('/uploads', express.static(path.resolve('uploads')));
+		//this.app.use(express.static('public'));
 		this.app.use(express.static(path.join(__dirname, 'public'))); //metodo usado para indicar donde esta la carpeta public
-
 
 		 //Variables globales
 		 this.app.use((req,res,next)=>{			
@@ -71,18 +64,12 @@ class Server{
 			this.app.locals.confirmacion =req.flash('confirmacion');
 			this.app.locals.login = req.session.auth;			
 			next();
-		});
-
-		
-		
+		});		
 	}
 
 	routes():void{
         this.app.use(indexRoutes);
 		this.app.use("/user",userRoutes);
-		this.app.use("/articulo",articuloRoutes);
-		this.app.use("/proveedor",ProveedorRoutes);	
-		this.app.use("/comentario",comentarioRoutes);	
     }
 
 	start():void{
@@ -95,4 +82,3 @@ class Server{
 
 const server = new Server();
 server.start(); //Ejecutamos el metodo start en inica el server
-

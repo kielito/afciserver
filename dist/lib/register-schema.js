@@ -3,21 +3,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.registerSchema = void 0;
 const express_validator_1 = require("express-validator");
 const schema = [
-    express_validator_1.body('usuario')
-        .isLength({ min: 3, max: 20 })
-        .withMessage('Debe contener minimo 3 caracteres y maximo 20!')
-        .matches(/^[a-z]$/)
-        .withMessage('Debe ser alfabético'),
-    express_validator_1.body('nombre')
-        .isLength({ min: 3, max: 20 })
+    /*
+    body('nombre')
+        .isLength({ min: 3, max: 20})
         .withMessage('Debe contener minimo 3 caracteres y maximo 20!')
         .matches(/^([a-zA-Z]{2,}\s[a-zA-Z]{1,}'?-?[a-zA-Z]{2,}\s?([a-zA-Z]{1,})?)/)
         .withMessage('Debe ser alfabético'),
-    express_validator_1.body('apellido')
-        .isLength({ min: 3, max: 20 })
+    body('apellido')
+        .isLength({ min: 3, max: 20})
         .withMessage('Debe contener minimo 3 caracteres y maximo 20!')
         .matches(/^[A-Za-z/g]+$/g)
         .withMessage('Debe ser alfabético'),
+    */
     express_validator_1.body('password')
         .isLength({ min: 6, max: 20 })
         .withMessage('Debe contener minimo 6 caracteres y maximo 20!')
