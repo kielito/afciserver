@@ -7,33 +7,37 @@ class UserController{
         res.render("partials/signinForm");
 	}	
 
+	public signup(req:Request,res:Response){		
+		//res.render("partials/signupForm");
+	}
+
     public async login(req:Request,res:Response){
-		var { Usuario, Email, Password } = req.body;
-		console.log(Usuario, Email);
-        const result = await userModel.buscarUsuario(Usuario, Email);
+		var { dni_usuario, pwd_usuario } = req.body;
+		console.log(dni_usuario);
+        const result = await userModel.buscarId(dni_usuario);
         
         if (!result){ 
-			return res.status(500).json({ message:"Usuario y/o Email incorrectos"});
+			return res.status(500).json({ message:"Dni incorrecto"});
 		} else {
-			const correctPassword = await userModel.validarPassword(Password, result.Password);
+			const correctPassword = await userModel.validarPassword(pwd_usuario, result.pwd_usuario);
 	
 			if (correctPassword){
 				req.session.user=result;
 				req.session.auth=true;
 
 				const sesion = req.session.user;
-				const token:string=jwt.sign({_id: result.id, _rol: result.rol},"secretKey", {
+				const token:string=jwt.sign({_dni_usuario: result.dni_usuario, _perfil_usuario: result.perfil_usuario},"secretKey", {
 					expiresIn: '1d'
 				}); //Genera el Token del Usuario
 				
-				return res.status(200).json({ message:"Bienvenido "+result.nombre, sesion,token:token });
+				return res.status(200).json({ message:"Bienvenido "+result.nombre_usuario, sesion,token:token });
 				
 			} else {	
 				return res.status(500).json({ message:"Usuario y/o Clave incorrectos"});
 			}			
 		}			
 	}
-
+	
 	//CRUD
 	public async list(req:Request,res:Response){		
         const usuarios = await userModel.listar();   
@@ -48,26 +52,26 @@ class UserController{
 	}
 
 	public async addUser(req:Request,res:Response){
-		const usuario = req.body;		
-		if(usuario.nombre.length < 2){
-			return res.status(500).json({ message:"El Usuario no cumple con las reglas!"}); //Dos parametros: primero variable, segundo el valor que tendra esa variable
+		const usuario = req.body;
+		if(usuario.dni_usuario.length < 6){
+			return res.status(500).json({ message:"El Dni no cumple con las reglas!"}); //Dos parametros: primero variable, segundo el valor que tendra esa variable
 		}	
 
-		if(usuario.password.length < 5){
+		if(usuario.pwd_usuario.length < 5){
 			return res.status(500).json({ message:"La clave no cumple con las reglas!"}); //Dos parametros: primero variable, segundo el valor que tendra esa variable
 		}
 
-		if(usuario.password !== usuario.repassword){
+		if(usuario.pwd_usuario !== usuario.repassword){
 			return res.status(500).json({ message:"Las claves deben ser iguales!"}); //Dos parametros: primero variable, segundo el valor que tendra esa variable
 		}
 
 		delete usuario.repassword;
-        const busqueda = await userModel.buscarUsuario(usuario.usuario, usuario.email);		
-		usuario.password = await userModel.encriptarPassword(usuario.password);
-
+        const busqueda = await userModel.buscarId(usuario.dni_usuario);		
+		usuario.pwd_usuario = await userModel.encriptarPassword(usuario.pwd_usuario);
+		
         if (!busqueda) {
             const result = await userModel.crear(usuario);
-
+			
 			if (!result)
 				return res.status(400).json({ message:"No se pudo crear el usuario "});
 			else{
@@ -80,6 +84,7 @@ class UserController{
 	public async update(req:Request,res:Response){		
         const { id } = req.params;		
 		const result = await userModel.buscarId(id);		
+		console.log(result);
 		
 		if(result)
 		{
@@ -89,14 +94,14 @@ class UserController{
 					delete usuario.NPass;
 					delete usuario.Password;			
 				} else{
-					usuario.Password = await userModel.encriptarPassword(usuario.NPass);
+					usuario.pwd_usuario = await userModel.encriptarPassword(usuario.NPass);
 					delete usuario.NPass;
 				}
 			} else {
-				delete usuario.Password;
+				delete usuario.pwd_usuario;
 			}			
 
-			if(usuario.Usuario === "" || usuario.Nombre === "" || usuario.Apellido === "" || usuario.Email === "" || usuario.Id === "" || usuario.Perfil === ""){
+			if(usuario.dni_usuario === "" || usuario.nombre_usuario === "" || usuario.apellido_usuario === "" || usuario.organismo === "" || usuario.pcia_usuario === "" || usuario.perfil_usuario === ""){
 				return res.status(400).json({ message:"Debe completar todos los datos!"});
 			}		
 			else{		
@@ -112,6 +117,7 @@ class UserController{
 
 	public async delete(req:Request,res:Response){        
 		const { id } = req.params; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
+		console.log(id);
         const result = await userModel.eliminar(id);				
 		return res.status(200).json({ message:"Se eliminó el usuario correctamente!"});
 	}

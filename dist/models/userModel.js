@@ -17,14 +17,14 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 class UserModel {
     constructor() {
         //Encriptar Clave
-        this.encriptarPassword = (password) => __awaiter(this, void 0, void 0, function* () {
+        this.encriptarPassword = (pwd_usuario) => __awaiter(this, void 0, void 0, function* () {
             const salt = yield bcryptjs_1.default.genSalt(10);
-            return yield bcryptjs_1.default.hash(password, salt);
+            return yield bcryptjs_1.default.hash(pwd_usuario, salt);
         });
         //Compara la Clave ingresada vs la registrada
-        this.validarPassword = function (password, passwordhash) {
+        this.validarPassword = function (pwd_usuario, passwordhash) {
             return __awaiter(this, void 0, void 0, function* () {
-                return yield bcryptjs_1.default.compare(password, passwordhash);
+                return yield bcryptjs_1.default.compare(pwd_usuario, passwordhash);
             });
         };
         this.config();
@@ -42,7 +42,7 @@ class UserModel {
                 host: 'localhost',
                 user: 'root',
                 password: '',
-                database: 'afci',
+                database: 'c32prod_geoaf',
                 connectionLimit: 10,
                 multipleStatements: false
                 */
@@ -55,46 +55,45 @@ class UserModel {
             return usuarios[0];
         });
     }
-    buscarId(id) {
+    buscarId(dni_usuario) {
         return __awaiter(this, void 0, void 0, function* () {
-            const encontrado = yield this.db.query('SELECT * FROM usuario WHERE Id = ?', [id]);
+            const encontrado = yield this.db.query('SELECT * FROM usuario WHERE dni_usuario = ?', [dni_usuario]);
             if (encontrado.length > 1)
                 return encontrado[0][0];
             return null;
         });
     }
-    buscarNombre(nombre) {
+    buscarNombre(nombre_usuario) {
         return __awaiter(this, void 0, void 0, function* () {
-            const encontrado = yield this.db.query('SELECT * FROM usuario WHERE Nombre = ?', [nombre]);
+            const encontrado = yield this.db.query('SELECT * FROM usuario WHERE nombre_usuario = ?', [nombre_usuario]);
             if (encontrado.length > 1)
                 return encontrado[0][0];
             return null;
         });
     }
-    buscarUsuario(usuario, email) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const encontrado = yield this.db.query('SELECT * FROM usuario WHERE Usuario = ? AND Email = ?', [usuario, email]);
-            if (encontrado.length > 1)
-                return encontrado[0][0];
-            return null;
-        });
+    /*
+    async buscarUsuario(usuario: string, email: string) {
+        const encontrado: any = await this.db.query('SELECT * FROM usuario WHERE Usuario = ? AND Email = ?', [usuario,email]);
+        if (encontrado.length > 1)
+            return encontrado[0][0];
+        return null;
     }
+    */
     crear(usuario) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = (yield this.db.query('INSERT INTO usuario SET ?', [usuario]))[0].insertId;
+            const result = (yield this.db.query('INSERT INTO usuario SET ?', [usuario]))[0].affectedRows;
             return result;
         });
     }
-    actualizar(usuario, id) {
+    actualizar(usuario, dni_usuario) {
         return __awaiter(this, void 0, void 0, function* () {
-            const result = (yield this.db.query('UPDATE usuario SET ? WHERE Id = ?', [usuario, id]))[0].affectedRows;
+            const result = (yield this.db.query('UPDATE usuario SET ? WHERE dni_usuario = ?', [usuario, dni_usuario]))[0].affectedRows;
             return result;
         });
     }
-    eliminar(id) {
+    eliminar(dni_usuario) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = (yield this.db.query('DELETE FROM usuario WHERE Id = ?', [id]))[0].affectedRows;
-            console.log(user);
+            const user = (yield this.db.query('DELETE FROM usuario WHERE dni_usuario = ?', [dni_usuario]))[0].affectedRows;
             return user;
         });
     }

@@ -18,24 +18,27 @@ class UserController {
     signin(req, res) {
         res.render("partials/signinForm");
     }
+    signup(req, res) {
+        //res.render("partials/signupForm");
+    }
     login(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            var { Usuario, Email, Password } = req.body;
-            console.log(Usuario, Email);
-            const result = yield userModel_1.default.buscarUsuario(Usuario, Email);
+            var { dni_usuario, pwd_usuario } = req.body;
+            console.log(dni_usuario);
+            const result = yield userModel_1.default.buscarId(dni_usuario);
             if (!result) {
-                return res.status(500).json({ message: "Usuario y/o Email incorrectos" });
+                return res.status(500).json({ message: "Dni incorrecto" });
             }
             else {
-                const correctPassword = yield userModel_1.default.validarPassword(Password, result.Password);
+                const correctPassword = yield userModel_1.default.validarPassword(pwd_usuario, result.pwd_usuario);
                 if (correctPassword) {
                     req.session.user = result;
                     req.session.auth = true;
                     const sesion = req.session.user;
-                    const token = jsonwebtoken_1.default.sign({ _id: result.id, _rol: result.rol }, "secretKey", {
+                    const token = jsonwebtoken_1.default.sign({ _dni_usuario: result.dni_usuario, _perfil_usuario: result.perfil_usuario }, "secretKey", {
                         expiresIn: '1d'
                     }); //Genera el Token del Usuario
-                    return res.status(200).json({ message: "Bienvenido " + result.nombre, sesion, token: token });
+                    return res.status(200).json({ message: "Bienvenido " + result.nombre_usuario, sesion, token: token });
                 }
                 else {
                     return res.status(500).json({ message: "Usuario y/o Clave incorrectos" });
@@ -61,18 +64,18 @@ class UserController {
     addUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const usuario = req.body;
-            if (usuario.nombre.length < 2) {
-                return res.status(500).json({ message: "El Usuario no cumple con las reglas!" }); //Dos parametros: primero variable, segundo el valor que tendra esa variable
+            if (usuario.dni_usuario.length < 6) {
+                return res.status(500).json({ message: "El Dni no cumple con las reglas!" }); //Dos parametros: primero variable, segundo el valor que tendra esa variable
             }
-            if (usuario.password.length < 5) {
+            if (usuario.pwd_usuario.length < 5) {
                 return res.status(500).json({ message: "La clave no cumple con las reglas!" }); //Dos parametros: primero variable, segundo el valor que tendra esa variable
             }
-            if (usuario.password !== usuario.repassword) {
+            if (usuario.pwd_usuario !== usuario.repassword) {
                 return res.status(500).json({ message: "Las claves deben ser iguales!" }); //Dos parametros: primero variable, segundo el valor que tendra esa variable
             }
             delete usuario.repassword;
-            const busqueda = yield userModel_1.default.buscarUsuario(usuario.usuario, usuario.email);
-            usuario.password = yield userModel_1.default.encriptarPassword(usuario.password);
+            const busqueda = yield userModel_1.default.buscarId(usuario.dni_usuario);
+            usuario.pwd_usuario = yield userModel_1.default.encriptarPassword(usuario.pwd_usuario);
             if (!busqueda) {
                 const result = yield userModel_1.default.crear(usuario);
                 if (!result)
@@ -88,6 +91,7 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             const result = yield userModel_1.default.buscarId(id);
+            console.log(result);
             if (result) {
                 const usuario = req.body;
                 if (usuario.NPass) {
@@ -96,14 +100,14 @@ class UserController {
                         delete usuario.Password;
                     }
                     else {
-                        usuario.Password = yield userModel_1.default.encriptarPassword(usuario.NPass);
+                        usuario.pwd_usuario = yield userModel_1.default.encriptarPassword(usuario.NPass);
                         delete usuario.NPass;
                     }
                 }
                 else {
-                    delete usuario.Password;
+                    delete usuario.pwd_usuario;
                 }
-                if (usuario.Usuario === "" || usuario.Nombre === "" || usuario.Apellido === "" || usuario.Email === "" || usuario.Id === "" || usuario.Perfil === "") {
+                if (usuario.dni_usuario === "" || usuario.nombre_usuario === "" || usuario.apellido_usuario === "" || usuario.organismo === "" || usuario.pcia_usuario === "" || usuario.perfil_usuario === "") {
                     return res.status(400).json({ message: "Debe completar todos los datos!" });
                 }
                 else {
@@ -120,6 +124,7 @@ class UserController {
     delete(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params; // hacemos detrucsturing y obtenemos el ID. Es decir, obtenemos una parte de un objeto JS.
+            console.log(id);
             const result = yield userModel_1.default.eliminar(id);
             return res.status(200).json({ message: "Se eliminó el usuario correctamente!" });
         });
