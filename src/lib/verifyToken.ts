@@ -2,7 +2,7 @@ import {Request, Response, NextFunction} from "express";
 import jwt from "jsonwebtoken";
 
 interface IPayload {
-    _dni_usuario: string;
+    _dni_usuario: string;    
     _perfil_usuario: string;
     iat: number;
     exp: number;

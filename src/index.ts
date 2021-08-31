@@ -5,6 +5,7 @@ import indexRoutes from './routes/indexRoutes';
 import exphbs from "express-handlebars";
 import path from "path";
 import userRoutes from './routes/userRoutes';
+import declaracionRoutes from './routes/declaracionRoutes';
 import session from "express-session";
 import flash from "connect-flash";
 
@@ -62,7 +63,7 @@ class Server{
 		 this.app.use((req,res,next)=>{			
 			this.app.locals.error =req.flash('error');
 			this.app.locals.confirmacion =req.flash('confirmacion');
-			this.app.locals.login = req.session.auth;			
+			this.app.locals.login = req.session.auth;
 			next();
 		});		
 	}
@@ -70,6 +71,7 @@ class Server{
 	routes():void{
         this.app.use(indexRoutes);
 		this.app.use("/user",userRoutes);
+		this.app.use("/declaracion",declaracionRoutes);
     }
 
 	start():void{

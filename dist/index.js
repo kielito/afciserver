@@ -10,6 +10,7 @@ const indexRoutes_1 = __importDefault(require("./routes/indexRoutes"));
 const express_handlebars_1 = __importDefault(require("express-handlebars"));
 const path_1 = __importDefault(require("path"));
 const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
+const declaracionRoutes_1 = __importDefault(require("./routes/declaracionRoutes"));
 const express_session_1 = __importDefault(require("express-session"));
 const connect_flash_1 = __importDefault(require("connect-flash"));
 class Server {
@@ -58,6 +59,7 @@ class Server {
     routes() {
         this.app.use(indexRoutes_1.default);
         this.app.use("/user", userRoutes_1.default);
+        this.app.use("/declaracion", declaracionRoutes_1.default);
     }
     start() {
         this.app.listen(this.app.get('port'), () => {
