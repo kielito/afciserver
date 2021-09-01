@@ -9,7 +9,6 @@ class DeclaracionModel {
 
 	async config() {
 		this.db = await createPool({
-			
 			host: 'us-cdbr-east-04.cleardb.com',
 			user: 'b603cf410ef897',
 			password: 'd43c3a4c',
@@ -24,7 +23,6 @@ class DeclaracionModel {
 			connectionLimit: 10,
 			multipleStatements: false	
 			*/
-					
 		});
 	}
 	

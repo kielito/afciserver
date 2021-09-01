@@ -17,20 +17,20 @@ class DeclaracionModel {
     config() {
         return __awaiter(this, void 0, void 0, function* () {
             this.db = yield promise_1.createPool({
+                /*
                 host: 'us-cdbr-east-04.cleardb.com',
                 user: 'b603cf410ef897',
                 password: 'd43c3a4c',
                 database: 'heroku_8d9dee01461c848',
                 connectionLimit: 10,
                 multipleStatements: false
-                /*
+                */
                 host: 'localhost',
                 user: 'root',
                 password: '',
                 database: 'c32prod_geoaf',
                 connectionLimit: 10,
                 multipleStatements: false
-                */
             });
         });
     }
